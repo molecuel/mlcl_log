@@ -55,7 +55,7 @@ describe('mlcl_log', function() {
       molecuel.log.info('unittest', 'testinfo');
       setTimeout(function() {
           done();
-        }, 1000);
+        }, 1500);
     });
 
     it('should find logs in the elasticsearch', function(done) {

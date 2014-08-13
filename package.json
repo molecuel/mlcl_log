@@ -1,6 +1,6 @@
 {
   "name": "mlcl_log",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "winston": ">=0.0.1",
     "xtend": ">=0.0.1",
