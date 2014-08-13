@@ -51,11 +51,25 @@ describe('mlcl_log', function() {
       molecuel.emit('mlcl::core::init:post', molecuel);
     });
 
-    it('should write a log', function(done) {
+    it('should write first log', function(done) {
       molecuel.log.info('unittest', 'testinfo');
       setTimeout(function() {
           done();
-        }, 1500);
+        }, 1000);
+    });
+
+    it('should write second log', function(done) {
+      molecuel.log.info('unittest', 'testinfo');
+      setTimeout(function() {
+          done();
+        }, 1000);
+    });
+
+    it('should write third log', function(done) {
+      molecuel.log.info('unittest', 'testinfo');
+      setTimeout(function() {
+          done();
+        }, 1000);
     });
 
     it('should find logs in the elasticsearch', function(done) {
