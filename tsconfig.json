@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {},
+    "filesGlob": [
+        "./**/*.ts",
+        "!./node_modules/**/*.ts"
+    ],
+    "files": [
+        "./index.ts",
+        "./transports/elastic.ts",
+        "./typings/async/async.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/winston/winston.d.ts"
+    ]
+}
