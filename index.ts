@@ -1,11 +1,13 @@
 /// <reference path="./typings/async/async.d.ts"/>
 /// <reference path="./typings/winston/winston.d.ts"/>
 /// <reference path="./typings/node/node.d.ts"/>
+/// <reference path="./typings/underscore/underscore.d.ts"/>
 
 import winston = require('winston');
 import elastic = require('./transports/elastic');
 import async = require('async');
 import util = require('util');
+import _ = require('underscore');
 
 class mlcl_log {
 
@@ -78,6 +80,10 @@ class mlcl_log {
       meta = {};
     }
     meta.source = source;
+    msg = msg || '';
+    if(_.isObject(msg)) {
+      msg = msg.toString();
+    }
     msg = msg.trim();
     if(msg.length>0) {
       this.logger.log(level, msg, meta);

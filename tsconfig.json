@@ -9,6 +9,7 @@
         "./transports/elastic.ts",
         "./typings/async/async.d.ts",
         "./typings/node/node.d.ts",
+        "./typings/underscore/underscore.d.ts",
         "./typings/winston/winston.d.ts"
     ]
 }

@@ -1,10 +1,12 @@
 /// <reference path="./typings/async/async.d.ts"/>
 /// <reference path="./typings/winston/winston.d.ts"/>
 /// <reference path="./typings/node/node.d.ts"/>
+/// <reference path="./typings/underscore/underscore.d.ts"/>
 var winston = require('winston');
 var elastic = require('./transports/elastic');
 var async = require('async');
 var util = require('util');
+var _ = require('underscore');
 var mlcl_log = (function () {
     function mlcl_log() {
         var _this = this;
@@ -60,6 +62,10 @@ var mlcl_log = (function () {
             meta = {};
         }
         meta.source = source;
+        msg = msg || '';
+        if (_.isObject(msg)) {
+            msg = msg.toString();
+        }
         msg = msg.trim();
         if (msg.length > 0) {
             this.logger.log(level, msg, meta);
