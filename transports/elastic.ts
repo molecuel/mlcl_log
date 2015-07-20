@@ -35,6 +35,7 @@ var Elasticsearch = function Elasticsearch( options ) {
 
 util.inherits( Elasticsearch, winston.Transport );
 
+Elasticsearch.prototype.name = 'elasticsearch';
 
 /**
  * Handle Log Entries

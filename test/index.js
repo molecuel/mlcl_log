@@ -29,7 +29,15 @@ describe('mlcl_log', function() {
 
     molecuel.config.log = {
       ttl: '4w',
-      overwriteConsole: false
+      overwriteConsole: false,
+      transports: {
+        elasticsearch: {
+          level: 'info'
+        },
+        console: {
+          level: 'debug'
+        }
+      }
     };
 
     mlcl_elastic(molecuel);

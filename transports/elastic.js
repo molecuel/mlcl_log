@@ -6,7 +6,6 @@ var winston = require('winston');
 var xtend;
 xtend = require('xtend');
 var mlcl_elastic;
-
 var Elasticsearch = function Elasticsearch(options) {
     options = options || {};
     this.level = options.level || 'info';
@@ -17,6 +16,7 @@ var Elasticsearch = function Elasticsearch(options) {
     return this;
 };
 util.inherits(Elasticsearch, winston.Transport);
+Elasticsearch.prototype.name = 'elasticsearch';
 Elasticsearch.prototype.log = function log(level, msg, meta, callback) {
     var self = this;
     var args = Array.prototype.slice.call(arguments, 0);

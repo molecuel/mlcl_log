@@ -1,13 +1,13 @@
 /// <reference path="./typings/async/async.d.ts"/>
 /// <reference path="./typings/winston/winston.d.ts"/>
 /// <reference path="./typings/node/node.d.ts"/>
-/// <reference path="./typings/underscore/underscore.d.ts"/>
+/// <reference path="./typings/lodash/lodash.d.ts"/>
 
 import winston = require('winston');
 import elastic = require('./transports/elastic');
 import async = require('async');
 import util = require('util');
-import _ = require('underscore');
+import _ = require('lodash');
 
 class mlcl_log {
 
@@ -37,10 +37,13 @@ class mlcl_log {
     // provides mlcl_elastic as argument for the function...
     mlcl_log.molecuel.once('mlcl::search::connection:success', (mlcl_elastic) => {
       this.registerTransport('elasticsearch', elastic(mlcl_elastic));
-      /*if(mlcl_log.molecuel.config.log.overwriteConsole) {
-        console.log('overwrite console');
-        this.overwriteConsole();
-      }*/
+
+      var logconf = mlcl_log.molecuel.config.log;
+      if(logconf.transports && logconf.transports.console && logconf.transports.console.level) {
+        this.logger['transports'].console.level = logconf.transports.console.level;
+      } else {
+        this.logger.remove(winston.transports.Console);
+      }
 
       if(mlcl_log.molecuel.config.log.ttl) {
         var index = 'logs';
@@ -54,13 +57,16 @@ class mlcl_log {
         };
 
         mlcl_elastic.checkCreateIndex(index, {}, mapping, () => {
-          this.logger.add(winston.transports['elasticsearch'])
-            .remove(winston.transports.Console);
-            mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+          if(logconf.transports && logconf.transports.elasticsearch && logconf.transports.elasticsearch.level) {
+            this.logger.add(winston.transports['elasticsearch'], {level: logconf.transports.elasticsearch.level })
+              mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+          } else {
+            this.logger.add(winston.transports['elasticsearch'])
+              mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+          }
         });
       } else {
         this.logger.add(winston.transports['elasticsearch'])
-          .remove(winston.transports.Console);
           mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
       }
     });

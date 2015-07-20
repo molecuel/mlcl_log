@@ -1,10 +1,11 @@
 {
   "name": "mlcl_log",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "dependencies": {
+    "async": ">=0.0.1",
+    "lodash": "^3.10.0",
     "winston": ">=0.0.1",
-    "xtend": ">=0.0.1",
-    "async": ">=0.0.1"
+    "xtend": ">=0.0.1"
   },
   "engines": {
     "node": ">= 0.10.0"
