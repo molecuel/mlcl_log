@@ -5,6 +5,7 @@ var should = require('should'),
   util = require('util'),
   EventEmitter = require('events').EventEmitter,
   mlcl_elastic = require('mlcl_elastic'),
+  mlcl_queue = require('mlcl_queue'),
   mlcl_log = require('../');
 
 describe('mlcl_log', function() {
@@ -40,8 +41,13 @@ describe('mlcl_log', function() {
       }
     };
 
+    molecuel.config.queue = {
+      uri: 'amqp://localhost'
+    };
+
     mlcl_elastic(molecuel);
     log = mlcl_log(molecuel);
+    mlcl_queue(molecuel);
 
     molecuel.once('mlcl::search::connection:success', function(search) {
       searchcon = search;
