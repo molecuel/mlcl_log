@@ -46,7 +46,7 @@ describe('mlcl_log', function() {
     };
 
     mlcl_elastic(molecuel);
-    log = mlcl_log(molecuel);
+    log = new mlcl_log(molecuel);
     mlcl_queue(molecuel);
 
     molecuel.once('mlcl::search::connection:success', function(search) {

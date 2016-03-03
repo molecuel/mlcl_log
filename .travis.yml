@@ -1,8 +1,0 @@
-language: node_js
-services:
-  - elasticsearch
-  - rabbitmq
-node_js:
-  - "0.10"
-before_script:
-  - sleep 30
