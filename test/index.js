@@ -6,7 +6,7 @@ var should = require('should'),
   EventEmitter = require('events').EventEmitter,
   mlcl_elastic = require('mlcl_elastic'),
   mlcl_queue = require('mlcl_queue'),
-  mlcl_log = require('../');
+  mlcl_log = require('../dist');
 
 describe('mlcl_log', function() {
   var mlcl;
