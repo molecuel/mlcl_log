@@ -1,4 +1,4 @@
-var config;
+let config;
 
 config = {
   name: 'log'
