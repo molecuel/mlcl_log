@@ -26,9 +26,9 @@ class mlcl_log {
         else {
             this.logger.remove(winston.transports.Console);
         }
-        if (logconf.elasticsearch === true
-            || (typeof logconf.elasticsearch === 'object' && !Array.isArray(logconf.elasticsearch))) {
-            mlcl_log.molecuel.once('mlcl::search::connection:success', (mlclElastic) => {
+        mlcl_log.molecuel.once('mlcl::search::connection:success', (mlclElastic) => {
+            if (logconf.elasticsearch === true
+                || (typeof logconf.elasticsearch === 'object' && !Array.isArray(logconf.elasticsearch))) {
                 this.registerTransport('elasticsearch', elastic(mlclElastic));
                 if (mlcl_log.molecuel.config.log.ttl) {
                     let index = 'logs';
@@ -54,8 +54,11 @@ class mlcl_log {
                     this.logger.add(winston.transports['elasticsearch']);
                     mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
                 }
-            });
-        }
+            }
+            else {
+                mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+            }
+        });
         mlcl_log.molecuel.on('mlcl::search::connection:disconnected', () => {
             this.recoverConsole();
             mlcl_log.molecuel.log = console;

@@ -36,39 +36,40 @@ class mlcl_log {
       this.logger.remove(winston.transports.Console);
     }
 
-    if (logconf.elasticsearch === true
-      || (typeof logconf.elasticsearch === 'object' && !Array.isArray(logconf.elasticsearch))) {
+    // provides mlclElastic as argument for the function...
+    mlcl_log.molecuel.once('mlcl::search::connection:success', (mlclElastic) => {
+      if (logconf.elasticsearch === true
+        || (typeof logconf.elasticsearch === 'object' && !Array.isArray(logconf.elasticsearch))) {
 
-      // provides mlclElastic as argument for the function...
-      mlcl_log.molecuel.once('mlcl::search::connection:success', (mlclElastic) => {
-        this.registerTransport('elasticsearch', elastic(mlclElastic));
-
-        if (mlcl_log.molecuel.config.log.ttl) {
-          let index = 'logs';
-          if (mlcl_log.molecuel.config.log && mlcl_log.molecuel.config.log.index) {
-            index = mlcl_log.molecuel.config.log.index;
-          }
-
-          let mapping = {};
-          mapping[index] = {
-            '_ttl': { 'enabled': true, 'default': mlcl_log.molecuel.config.log.ttl }
-          };
-
-          mlclElastic.checkCreateIndex(index, {}, mapping, () => {
-            if (logconf.transports && logconf.transports.elasticsearch && logconf.transports.elasticsearch.level) {
-              this.logger.add(winston.transports['elasticsearch'], { level: logconf.transports.elasticsearch.level });
-              mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
-            } else {
-              this.logger.add(winston.transports['elasticsearch']);
-              mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+          this.registerTransport('elasticsearch', elastic(mlclElastic));
+          if (mlcl_log.molecuel.config.log.ttl) {
+            let index = 'logs';
+            if (mlcl_log.molecuel.config.log && mlcl_log.molecuel.config.log.index) {
+              index = mlcl_log.molecuel.config.log.index;
             }
-          });
-        } else {
-          this.logger.add(winston.transports['elasticsearch']);
-          mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
-        }
-      });
-    }
+
+            let mapping = {};
+            mapping[index] = {
+              '_ttl': { 'enabled': true, 'default': mlcl_log.molecuel.config.log.ttl }
+            };
+
+            mlclElastic.checkCreateIndex(index, {}, mapping, () => {
+              if (logconf.transports && logconf.transports.elasticsearch && logconf.transports.elasticsearch.level) {
+                this.logger.add(winston.transports['elasticsearch'], { level: logconf.transports.elasticsearch.level });
+                mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+              } else {
+                this.logger.add(winston.transports['elasticsearch']);
+                mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+              }
+            });
+          } else {
+            this.logger.add(winston.transports['elasticsearch']);
+            mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+          }
+      } else {
+        mlcl_log.molecuel.emit('mlcl::log::connection:success', this);
+      }
+    });
 
     mlcl_log.molecuel.on('mlcl::search::connection:disconnected', () => {
       this.recoverConsole();

@@ -5,7 +5,6 @@ var should = require('should'),
   util = require('util'),
   EventEmitter = require('events').EventEmitter,
   mlcl_elastic = require('mlcl_elastic'),
-  mlcl_queue = require('mlcl_queue'),
   mlcl_log = require('../dist');
 
 describe('mlcl_log', function() {
@@ -30,6 +29,7 @@ describe('mlcl_log', function() {
 
     molecuel.config.log = {
       ttl: '4w',
+      elasticsearch: true,
       overwriteConsole: false,
       transports: {
         elasticsearch: {
@@ -41,13 +41,8 @@ describe('mlcl_log', function() {
       }
     };
 
-    molecuel.config.queue = {
-      uri: 'amqp://localhost'
-    };
-
     mlcl_elastic(molecuel);
     log = new mlcl_log(molecuel);
-    mlcl_queue(molecuel);
 
     molecuel.once('mlcl::search::connection:success', function(search) {
       searchcon = search;
@@ -58,11 +53,14 @@ describe('mlcl_log', function() {
   describe('elastic', function() {
 
     it('should wait for log init', function(done) {
+      this.timeout(4000);
       molecuel.once('mlcl::log::connection:success', function(connection) {
         connection.should.be.a.object;
         done();
       });
       molecuel.emit('mlcl::core::init:post', molecuel);
+      // fake event
+      molecuel.emit('mlcl::queue::init:post', {});      
     });
 
     it('should write first log', function(done) {
