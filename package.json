@@ -1,6 +1,6 @@
 {
   "name": "mlcl_log",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "dependencies": {
     "async": ">=0.0.1",
     "lodash": "^4.0.0",

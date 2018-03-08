@@ -29,15 +29,16 @@ class mlcl_log {
       mlcl_log.molecuel.log = this;
     });
 
-    let logconf = mlcl_log.molecuel.config.log;
-    if (logconf.transports && logconf.transports.console && logconf.transports.console.level) {
-      this.logger['transports'].console.level = logconf.transports.console.level;
-    } else {
-      this.logger.remove(winston.transports.Console);
-    }
-
     // provides mlclElastic as argument for the function...
     mlcl_log.molecuel.once('mlcl::search::connection:success', (mlclElastic) => {
+
+      let logconf = mlcl_log.molecuel.config.log;
+      if (logconf.transports && logconf.transports.console && logconf.transports.console.level) {
+        this.logger['transports'].console.level = logconf.transports.console.level;
+      } else {
+        this.logger.remove(winston.transports.Console);
+      }
+
       if (logconf.elasticsearch === true
         || (typeof logconf.elasticsearch === 'object' && !Array.isArray(logconf.elasticsearch))) {
 
